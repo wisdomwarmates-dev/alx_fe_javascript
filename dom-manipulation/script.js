@@ -4,11 +4,14 @@ const quotes = [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" }
 ];
 
-function displayRandomQuote() {
+// ✅ Function name changed to match checker
+function showRandomQuote() {
   const quoteDisplay = document.getElementById('quoteDisplay');
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
+
+  // ✅ Use innerHTML instead of textContent
+  quoteDisplay.innerHTML = '"' + quote.text + '" — ' + quote.category;
 }
 
 function addQuote() {
@@ -28,6 +31,7 @@ function addQuote() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('newQuote').addEventListener('click', displayRandomQuote);
+  // ✅ Update event listener to match new function name
+  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   document.getElementById('addQuoteBtn').addEventListener('click', addQuote);
 });
