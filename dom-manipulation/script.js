@@ -4,13 +4,10 @@ const quotes = [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" }
 ];
 
-// ✅ Function name changed to match checker
 function showRandomQuote() {
   const quoteDisplay = document.getElementById('quoteDisplay');
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-
-  // ✅ Use innerHTML instead of textContent
   quoteDisplay.innerHTML = '"' + quote.text + '" — ' + quote.category;
 }
 
@@ -30,8 +27,33 @@ function addQuote() {
   categoryInput.value = '';
 }
 
+// ✅ New function to dynamically create the form
+function createAddQuoteForm() {
+  const formContainer = document.createElement('div');
+
+  const quoteInput = document.createElement('input');
+  quoteInput.id = 'newQuoteText';
+  quoteInput.type = 'text';
+  quoteInput.placeholder = 'Enter a new quote';
+
+  const categoryInput = document.createElement('input');
+  categoryInput.id = 'newQuoteCategory';
+  categoryInput.type = 'text';
+  categoryInput.placeholder = 'Enter quote category';
+
+  const addButton = document.createElement('button');
+  addButton.id = 'addQuoteBtn';
+  addButton.textContent = 'Add Quote';
+  addButton.addEventListener('click', addQuote);
+
+  formContainer.appendChild(quoteInput);
+  formContainer.appendChild(categoryInput);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-  // ✅ Update event listener to match new function name
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
-  document.getElementById('addQuoteBtn').addEventListener('click', addQuote);
+  createAddQuoteForm(); // ✅ Call the form creation function
 });
