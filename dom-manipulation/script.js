@@ -46,8 +46,10 @@ function addQuote() {
     return;
   }
 
-  quotes.push({ text, category });
+  const newQuote = { text, category };
+  quotes.push(newQuote);
   saveQuotes();
+  postQuoteToServer(newQuote); // ✅ POST to server
   quoteInput.value = '';
   categoryInput.value = '';
   populateCategories();
@@ -171,6 +173,24 @@ async function fetchQuotesFromServer() {
   }
 }
 
+// ✅ POST quote to server using method, headers, Content-Type
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch(SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+
+    const result = await response.json();
+    console.log("Quote posted to server:", result);
+  } catch (err) {
+    console.error("Failed to post quote:", err);
+  }
+}
+
 // ✅ Merge server quotes and resolve conflicts
 function syncQuotes(serverQuotes) {
   let updated = false;
@@ -202,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('exportBtn').addEventListener('click', exportQuotes);
   setInterval(fetchQuotesFromServer, 60000); // ✅ Periodic sync using async/await
 });
+
 
 
 
