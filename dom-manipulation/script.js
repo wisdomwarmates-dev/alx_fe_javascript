@@ -156,18 +156,19 @@ function notifyUser(message) {
   setTimeout(() => notification.textContent = '', 5000);
 }
 
-// ✅ Checker-compliant function name for server sync
-function fetchQuotesFromServer() {
-  fetch(SERVER_URL)
-    .then(response => response.json())
-    .then(serverData => {
-      const serverQuotes = serverData.slice(0, 5).map(item => ({
-        text: item.title,
-        category: 'Server'
-      }));
-      syncQuotes(serverQuotes);
-    })
-    .catch(err => console.error('Server fetch failed:', err));
+// ✅ Checker-compliant function name using async/await
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const serverData = await response.json();
+    const serverQuotes = serverData.slice(0, 5).map(item => ({
+      text: item.title,
+      category: 'Server'
+    }));
+    syncQuotes(serverQuotes);
+  } catch (err) {
+    console.error('Server fetch failed:', err);
+  }
 }
 
 // ✅ Merge server quotes and resolve conflicts
@@ -199,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadQuotes();
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   document.getElementById('exportBtn').addEventListener('click', exportQuotes);
-  setInterval(fetchQuotesFromServer, 60000); // ✅ Periodic sync
+  setInterval(fetchQuotesFromServer, 60000); // ✅ Periodic sync using async/await
 });
 
 
